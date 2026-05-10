@@ -1,0 +1,9 @@
+function A = build_A(a1, a2, n)
+    A = ones(length(a1), 1); % eerste kolom is altijd volledig gevuld met enen
+
+    for k=1:n
+        A(:,2*k) = a1.^k;
+        A(:,k+2) = a2.^k;
+    end
+
+end
