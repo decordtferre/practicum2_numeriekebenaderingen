@@ -35,22 +35,12 @@ for n=1:max_n
     A_e = build_A(xe, ye, n);
     b_hat   = classify(A_e, beta);
     fouten(n) = sum(b_hat ~= cate);
-    
-    [xx, yy] = meshgrid(linspace(min(a1)-0.1, max(a1)+0.1, 500), ...
-                        linspace(min(a2)-0.1, max(a2)+0.1, 500));
-    A_grid = build_A(xx(:), yy(:), n);
-    p_grid = 1 ./ (1 + exp(-A_grid * beta));
-    p_grid = reshape(p_grid, size(xx));
-    
-    subplot(4, 5, n)
-    hold on;
-    grid on;
-    xlabel('x1'); ylabel('x2')
-    title(sprintf('n = %d', n));
-    contour(xx, yy, p_grid, [0.5 0.5], 'k', 'LineWidth', 2);
-    scatter(a1(b==1), a2(b==1), 20, 'b', 'filled');
-    scatter(a1(b==-1), a2(b==-1), 20, 'r', 'filled');
-    hold off
+
+    CV(n) = 1/(2*size(xe,1))*sum(abs(cate-b_hat));
 end
 
-disp(fouten) 
+plot(1:max_n, CV, 'r-o', 'LineWidth', 2, 'MarkerFaceColor', 'r');
+xlabel('n'); ylabel('Kruisvalidatiefout');
+grid on;
+
+disp(fouten)
