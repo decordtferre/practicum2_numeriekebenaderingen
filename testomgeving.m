@@ -2,11 +2,12 @@ load("DatasetCV.mat")
 a1 = x;
 a2 = y;
 b = cat;
+max_n = 5;
 
 figure;
-fouten = zeros(n,1);
+fouten = zeros(max_n,1);
 
-for n=1:5
+for n=1:max_n
     A       = build_A(a1, a2, n);
     beta    = GD(A, b);
     b_hat   = classify(A, beta);
