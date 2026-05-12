@@ -14,7 +14,7 @@ fouten = zeros(max_n, 1);
 CV = zeros(max_n, 1);
 
 % Trainen en testen
-for n=1:max_n
+parfor n=1:max_n
    CV_local = zeros(K, 1);
     fouten_local = zeros(K, 1);
 
@@ -44,7 +44,7 @@ for n=1:max_n
         x0 = zeros(M,1);
 
         % GD
-        [beta, step] = GD(func, Dfunc, x0, 1, 1e-6, 3000);
+        [beta, step] = GD(func, Dfunc, x0, 1, 1e-6, 10000);
 
         % Testfold evalueren
         A_e   = build_A(xe, ye, n);
@@ -65,3 +65,11 @@ xlabel('n'); ylabel('Kruisvalidatiefout');
 grid on;
 
 disp(fouten)
+
+% ===== OPSLAAN VAN PLOT IN /figures =====
+scriptName = mfilename;
+[currentPath, ~, ~] = fileparts(mfilename('fullpath'));
+targetFolder = fullfile(currentPath, 'figures');
+fileName = fullfile(targetFolder, [scriptName, '.eps']);
+exportgraphics(gcf, fileName, 'ContentType', 'vector');
+disp(['Plot succesvol opgeslagen als: ', fileName]);
