@@ -17,7 +17,7 @@ ye = zeros(0, 0);
 cate = zeros(0, 0);
 
 % Random split in trainingsdata en testdata
-for i = 1:length(a1)
+parfor i = 1:length(a1)
     if randi([0 1]) == 1
         xr = [xr; a1(i)];
         yr = [yr; a2(i)];
@@ -32,7 +32,7 @@ end
 fouten = zeros(max_n, 1);
 CV = zeros(max_n, 1);
 
-for n=1:max_n
+parfor n=1:max_n
 
     % ===== TRAIN DATA =====
     A = build_A(xr, yr, n);

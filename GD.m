@@ -15,7 +15,7 @@ function [x, step] = GD(func, Dfunc, x0, alpha, tol, max_iter)
     end
 
     if nargin < 6
-        max_iter = 100000;
+        max_iter = 10000;
     end
 
     x = x0;

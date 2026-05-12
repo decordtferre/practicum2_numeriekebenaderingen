@@ -13,7 +13,7 @@ kruisvalidatiefout = zeros(max_n,1);
 
 N = length(x1);
 
-for n = 1:max_n
+parfor n = 1:max_n
 
     CV = zeros(N,1);
 
@@ -37,7 +37,7 @@ for n = 1:max_n
         Dfunc = @(beta) -(1/Ntr) * (A' * (catr ./ (1 + exp(catr .* (A * beta)))));
 
         x0 = zeros(M,1);
-        beta = GD(func, Dfunc, x0);
+        beta = GD(func, Dfunc, x0, 1, 1e-6, 1000); % aantal iteraties op 1000 gezet
 
         % ===== TEST =====
         A_e = build_A(x1(i), x2(i), n);
