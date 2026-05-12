@@ -1,44 +1,49 @@
-function [beta, step] = GD(A, b)
+function [x, step] = GD(func, Dfunc, x0, alpha, tol, max_iter)
 
-    [N, n] = size(A);
-    beta   = zeros(n, 1);
-    tol    = 1e-6;
-    gamma = 1/3;
-    q  = 0.5;
 
-    for k = 1:10000
-        p    = 1 ./ (1 + exp(-b .* (A * beta)));
-        grad = -(1/N) * (A' * ((1 - p) .* b));
+    % default waarden mochten sommige argumenten niet worden ingevuld
+    if nargin < 4
+        alpha = 1;
+    end
+
+    % parameters voor backtracking
+    gamma = 1e-4;
+    q = 0.5;
+
+    if nargin < 5
+        tol = 1e-6;
+    end
+
+    if nargin < 6
+        max_iter = 100000;
+    end
+
+    x = x0;
+
+    for step = 1:max_iter
+        grad = Dfunc(x); % bereken gradient
+        p = -grad; % zoekrichting
+        alpha_k = alpha; % startwaarde voor stapgrootte
         
-        % vroeger stoppen als als de gradient reeds klein genoeg is
-        % = convergentiecriterium
-        if norm(grad) < tol
-            break
-        end
-        
-
-        f_k_1 = (1/N) * sum(log(1 + exp(-b .* (A * beta))));
-        % zoekrichting bepalen
-        p_k = -grad;
-
-        step = 1;
         while true
-            beta_k = beta + step * p_k;
-            f_k = (1/N) * sum(log(1 + exp(-b .* (A * beta_k))));
-            
-            % fout vergelijken
-            if f_k <= f_k_1 + gamma * step * (grad' * p_k)
-                break
+            x_new = x + alpha_k*p;
+            if func(x_new) <= func(x) + gamma*alpha_k*(grad'*p)
+                break;
             end
-            step = q * step;
-            
-            % stop bij te kleine stapgrootte
-            if step < 1e-10
+
+            alpha_k = q*alpha_k;
+
+            if alpha_k < 1e-12
                 break
             end
         end
 
-        beta = beta + step * p_k;
-        
+        x = x_new;
+
+        %convergentiecriterium
+        if norm(x_new - x) < tol
+            x = x_new;
+            break;
+        end
     end
 end
