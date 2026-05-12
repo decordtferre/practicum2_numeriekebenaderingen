@@ -41,7 +41,7 @@ function [x, step] = GD(func, Dfunc, x0, alpha, tol, max_iter)
         x = x_new;
 
         %convergentiecriterium
-        if norm(x_new - x) < tol
+        if norm(grad) < tol
             x = x_new;
             break;
         end
