@@ -59,3 +59,11 @@ ylabel('Cross-validatie fout');
 grid on;
 
 disp(fouten)
+
+% ===== OPSLAAN VAN PLOT IN /figures =====
+scriptName = mfilename;
+[currentPath, ~, ~] = fileparts(mfilename('fullpath'));
+targetFolder = fullfile(currentPath, 'figures');
+fileName = fullfile(targetFolder, [scriptName, '.eps']);
+exportgraphics(gcf, fileName, 'ContentType', 'vector');
+disp(['Plot succesvol opgeslagen als: ', fileName]);

@@ -4,12 +4,12 @@ load("DatasetCV.mat")
 a1 = x;
 a2 = y;
 b = cat;
-max_n = 6;
+max_n = 5;
 
 figure;
-fouten = zeros(max_n,1);
+fouten = zeros(max_n + 1,1);
 
-for n=1:max_n
+for n=0:max_n
     % Design matrix bouwen
     A = build_A(a1, a2, n);
     [N,M] = size(A);
@@ -28,7 +28,7 @@ for n=1:max_n
     b_hat = classify(A, beta);
 
     % Aantal fouten
-    fouten(n) = sum(b_hat ~= b);
+    fouten(n+1) = sum(b_hat ~= b);
     
     [xx, yy] = meshgrid(linspace(min(a1)-0.1, max(a1)+0.1, 500), ...
                         linspace(min(a2)-0.1, max(a2)+0.1, 500));
@@ -38,15 +38,21 @@ for n=1:max_n
     p_grid = 1 ./ (1 + exp(-A_grid * beta));
     p_grid = reshape(p_grid, size(xx));
     
-    subplot(2, 3, n)
+    subplot(2, 3, n+1)
     hold on;
     grid on;
     xlabel('x1'); ylabel('x2')
-    title(sprintf('n = %d | Fouten = %d', n, fouten(n)));
+    title(sprintf('n = %d | Fouten = %d', n, fouten(n+1)));
     contour(xx, yy, p_grid, [0.5 0.5], 'k', 'LineWidth', 2);
     scatter(a1(b==1), a2(b==1), 20, 'b', 'filled');
     scatter(a1(b==-1), a2(b==-1), 20, 'r', 'filled');
     hold off
 end
 
-disp(fouten)
+% ===== OPSLAAN VAN PLOT IN /figures =====
+scriptName = mfilename;
+[currentPath, ~, ~] = fileparts(mfilename('fullpath'));
+targetFolder = fullfile(currentPath, 'figures');
+fileName = fullfile(targetFolder, [scriptName, '.eps']);
+exportgraphics(gcf, fileName, 'ContentType', 'vector');
+disp(['Plot succesvol opgeslagen als: ', fileName]);
