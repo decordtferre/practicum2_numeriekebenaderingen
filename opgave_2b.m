@@ -1,3 +1,5 @@
+clear all; clc
+
 load("DatasetCV.mat")
 a1 = x;
 a2 = y;
@@ -23,7 +25,7 @@ for n=1:max_n
     hold on;
     grid on;
     xlabel('x1'); ylabel('x2')
-    title(sprintf('n = %d', n));
+    title(sprintf('n = %d | Fouten = %d', n, fouten(n)));
     contour(xx, yy, p_grid, [0.5 0.5], 'k', 'LineWidth', 2);
     scatter(a1(b==1), a2(b==1), 20, 'b', 'filled');
     scatter(a1(b==-1), a2(b==-1), 20, 'r', 'filled');

@@ -11,6 +11,7 @@ function [beta, step] = GD(A, b)
         grad = -(1/N) * (A' * ((1 - p) .* b));
         
         % vroeger stoppen als als de gradient reeds klein genoeg is
+        % = convergentiecriterium
         if norm(grad) < tol
             break
         end

@@ -1,3 +1,5 @@
+clear all; clc;
+
 load("DatasetCV.mat")
 a1 = x;
 a2 = y;
