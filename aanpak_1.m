@@ -6,34 +6,44 @@ a2 = y;
 b = cat;
 max_n = 20;
 
+% ===== TRAININGSDATA =====
 xr = zeros(0, 0);
 yr = zeros(0, 0);
 catr = zeros(0, 0);
 
+% ===== TESTDATA =====
 xe = zeros(0, 0);
 ye = zeros(0, 0);
 cate = zeros(0, 0);
 
-% Verdeling opstellen
+% Random split in trainingsdata en testdata
 for i = 1:length(a1)
     if randi([0 1]) == 1
-        xr = [xr; x(i)];
-        yr = [yr; y(i)];
-        catr = [catr; cat(i)];
+        xr = [xr; a1(i)];
+        yr = [yr; a2(i)];
+        catr = [catr; b(i)];
     else
-        xe = [xe; x(i)];
-        ye = [ye; y(i)];
-        cate = [cate; cat(i)];
+        xe = [xe; a1(i)];
+        ye = [ye; a2(i)];
+        cate = [cate; b(i)];
     end
 end
 
-% Trainen en testen
-for n=1:max_n
-    %Trainen model
-    A = build_A(xr, yr, n);
-    beta = GD(A, catr);
+fouten = zeros(max_n, 1);
+CV = zeros(max_n, 1);
 
-    %Testdata evalueren
+for n=1:max_n
+
+    % ===== TRAIN DATA =====
+    A = build_A(xr, yr, n);
+    [N, M] = size(A);
+    func = @(beta) (1/N) * sum(log(1 + exp(-catr .* (A * beta))));
+    Dfunc = @(beta) -(1/N) * (A' * ((1 ./ (1 + exp(catr .* (A * beta)))) .* catr));
+    x0 = zeros(M, 1);
+
+    beta = GD(func, Dfunc, x0);
+
+    % ===== TEST DATA =====
     A_e = build_A(xe, ye, n);
     b_hat = classify(A_e, beta);
     fouten(n) = sum(b_hat ~= cate);
@@ -41,8 +51,11 @@ for n=1:max_n
     CV(n) = 1/(2*size(xe,1))*sum(abs(cate-b_hat));
 end
 
+% ===== PLOT =====
+figure;
 plot(1:max_n, CV, 'r-o', 'LineWidth', 2, 'MarkerFaceColor', 'r');
-xlabel('n'); ylabel('Kruisvalidatiefout');
+xlabel('n');
+ylabel('Cross-validatie fout');
 grid on;
 
 disp(fouten)

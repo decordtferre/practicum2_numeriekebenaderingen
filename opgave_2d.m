@@ -11,7 +11,7 @@ fouten = zeros(max_n,1);
 
 for n=1:max_n
     % Design matrix bouwen
-    A       = build_A(a1, a2, n);
+    A = build_A(a1, a2, n);
     [N,M] = size(A);
     
     % Kostenfunctie en zijn gradiënt
