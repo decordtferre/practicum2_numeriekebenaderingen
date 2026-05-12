@@ -28,12 +28,12 @@ end
 % Trainen en testen
 for n=1:max_n
     %Trainen model
-    A       = build_A(xr, yr, n);
-    beta    = GD(A, catr);
+    A = build_A(xr, yr, n);
+    beta = GD(A, catr);
 
     %Testdata evalueren
     A_e = build_A(xe, ye, n);
-    b_hat   = classify(A_e, beta);
+    b_hat = classify(A_e, beta);
     fouten(n) = sum(b_hat ~= cate);
 
     CV(n) = 1/(2*size(xe,1))*sum(abs(cate-b_hat));
