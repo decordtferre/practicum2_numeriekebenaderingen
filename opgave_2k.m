@@ -9,6 +9,7 @@ y_data   = y;
 cat_data = cat;
 
 mean_CV = zeros(max_K, 1);
+var_CV  = zeros(max_K, 1);
 
 for K = 2:max_K
     CV_samples = zeros(n_samples, 1);
@@ -19,9 +20,7 @@ for K = 2:max_K
         ys   = y_data(idx_sample);
         cats = cat_data(idx_sample);
 
-        idx = randperm(N);
-        
-        % Knip af zodat N deelbaar is door K
+        idx    = randperm(N);
         N_trim = floor(N / K) * K;
         idx    = idx(1:N_trim);
         folds  = reshape(idx, K, []);
@@ -53,17 +52,29 @@ for K = 2:max_K
             CV_k(k) = sum(abs(cate - b_hat));
         end
 
-        CV_samples(s) = sum(CV_k);
+        CV_samples(s) = mean(CV_k);
     end
 
     mean_CV(K) = mean(CV_samples);
+    var_CV(K)  = var(CV_samples);
 end
 
-% Figuur — enkel K=2 tot K=15
+K_values = 2:max_K;
+
+% Figuur 1: Gemiddelde CV-fout
 figure;
-plot(2:max_K, mean_CV(2:end), 'b-o', 'LineWidth', 2, 'MarkerFaceColor', 'b');
-xlabel('K');
+plot(K_values, mean_CV(2:end), 'b-o', 'LineWidth', 2, 'MarkerFaceColor', 'b');
+xlabel('K (aantal folds)');
 ylabel('Gemiddelde kruisvalidatiefout');
+title('Gemiddelde CV-fout als functie van K (N=400, n=3, 200 samples)');
+grid on;
+
+% Figuur 2: Variantie van de CV-fout
+figure;
+plot(K_values, var_CV(2:end), 'r-o', 'LineWidth', 2, 'MarkerFaceColor', 'r');
+xlabel('K (aantal folds)');
+ylabel('Variantie van de kruisvalidatiefout');
+title('Variantie CV-fout als functie van K (N=400, n=3, 200 samples)');
 grid on;
 
 % Opslaan
@@ -71,6 +82,7 @@ scriptName = mfilename;
 [currentPath, ~, ~] = fileparts(mfilename('fullpath'));
 targetFolder = fullfile(currentPath, 'figures');
 if ~exist(targetFolder, 'dir'), mkdir(targetFolder); end
-fileName = fullfile(targetFolder, [scriptName, '.eps']);
-exportgraphics(gcf, fileName, 'ContentType', 'vector');
-disp(['Plot opgeslagen als: ', fileName]);
+
+exportgraphics(figure(1), fullfile(targetFolder, [scriptName, '_gemiddelde.eps']), 'ContentType', 'vector');
+exportgraphics(figure(2), fullfile(targetFolder, [scriptName, '_variantie.eps']), 'ContentType', 'vector');
+disp(['Plots opgeslagen in: ', targetFolder]);
