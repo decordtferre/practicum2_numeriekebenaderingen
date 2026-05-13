@@ -52,11 +52,12 @@ for K = 2:max_K
             CV_k(k) = sum(abs(cate - b_hat));
         end
 
-        CV_samples(s) = sum(CV_k);
+        CV_samples_mean(s) = mean(CV_k);  % voor mean_CV
+        CV_samples_sum(s)  = sum(CV_k);   % voor var_CV
     end
 
-    mean_CV(K) = mean(CV_samples);
-    var_CV(K)  = var(CV_samples);
+    mean_CV(K) = mean(CV_samples_mean);
+    var_CV(K)  = var(CV_samples_sum);   % variantie op som, niet op gemiddelde
 end
 
 K_values = 2:max_K;
