@@ -52,7 +52,6 @@ end
 
 xlabel('Graad n');
 ylabel('Kruisvalidatiefout CV_n');
-title('K-fold CV over 5 willekeurige schuddingen');
 legend('Location', 'northeast');
 hold off;
 

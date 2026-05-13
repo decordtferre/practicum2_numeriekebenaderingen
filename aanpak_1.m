@@ -48,7 +48,7 @@ parfor n=1:max_n
     b_hat = classify(A_e, beta);
     fouten(n) = sum(b_hat ~= cate);
 
-    CV(n) = 1/(2*size(xe,1))*sum(abs(cate-b_hat));
+    CV(n) = sum(abs(cate-b_hat))/N;
 end
 
 % ===== PLOT =====

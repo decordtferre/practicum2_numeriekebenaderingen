@@ -49,7 +49,6 @@ end
 
 xlabel('Graad n');
 ylabel('Kruisvalidatiefout CV_n');
-title('Stabiliteit van de cross-validatiefout over 5 random splits');
 legend('Location', 'northeast');
 hold off;
 

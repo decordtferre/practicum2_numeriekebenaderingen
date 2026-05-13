@@ -61,12 +61,13 @@ end
 
 K_values = 2:max_K;
 
+% N=400; n=3; 200 samples
+
 % Figuur 1: Gemiddelde CV-fout
 figure;
 plot(K_values, mean_CV(2:end), 'b-o', 'LineWidth', 2, 'MarkerFaceColor', 'b');
 xlabel('K (aantal folds)');
 ylabel('Gemiddelde kruisvalidatiefout');
-title('Gemiddelde CV-fout als functie van K (N=400, n=3, 200 samples)');
 grid on;
 
 % Figuur 2: Variantie van de CV-fout
@@ -74,8 +75,7 @@ figure;
 plot(K_values, var_CV(2:end), 'r-o', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 xlabel('K (aantal folds)');
 ylabel('Variantie van de kruisvalidatiefout');
-title('Variantie CV-fout als functie van K (N=400, n=3, 200 samples)');
-grid on;
+qgrid on;
 
 % Opslaan
 scriptName = mfilename;
