@@ -6,6 +6,7 @@ max_n = 20;
 K = 10;
 N = length(a1);
 
+
 % Vouwen maken
 idx = randperm(N);
 folds = reshape(idx, K, []);

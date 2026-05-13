@@ -58,16 +58,16 @@ figure;
 
 subplot(2,1,1);
 plot(N_values, mean_CV, 'b-o', 'LineWidth', 2);
-xlabel('N (dataset grootte)');
-ylabel('Gemiddelde CV_{LOO} fout');
-title('LOOCV schatter: gemiddelde over 50 samples (n=3)');
+xlabel('N');
+ylabel('Gemiddelde LOOCV fout');
+title('LOOCV: gemiddelde over 50 samples (n=3)');
 grid on;
 
 subplot(2,1,2);
 plot(N_values, var_CV, 'r-o', 'LineWidth', 2);
-xlabel('N (dataset grootte)');
-ylabel('Variantie van CV_{LOO} fout');
-title('LOOCV schatter: variantie over 50 samples (n=3)');
+xlabel('N');
+ylabel('Variantie van LOOCV fout');
+title('LOOCV: variantie over 50 samples (n=3)');
 grid on;
 
 % ===== OPSLAAN =====
